@@ -14,7 +14,8 @@ def load_preprocessing_artifacts(path):
     class DummyScaler:
         def transform(self, data):
             # Simple scaling simulation
-            return (data - data.mean()) / (data.std() + 1e-6)
+            # Return numpy array to match sklearn scaler behavior
+            return ((data - data.mean()) / (data.std() + 1e-6)).values
 
     return {
         'context_0': {

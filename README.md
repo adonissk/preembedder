@@ -79,3 +79,37 @@ python -m preembedder.main --config ../configs/my_config.yaml
 *Note:* Running from the `src` directory and using `python -m preembedder.main` ensures Python can correctly locate the package and handle relative imports. The configuration file path needs to be relative to the `src` directory (e.g., `../configs/my_config.yaml`).
 
 4.  **Check Results:** Find the extracted embeddings (`context_embeddings.json`), best hyperparameters (`best_hyperparameters.json`), and preprocessing artifacts (`preprocessing_artifacts.pkl`) in the specified `output_dir` (defaults to `results/` at the project root).
+
+## Applying Saved Embeddings
+
+Once you have run the main workflow and generated the embeddings (`context_embeddings.json`) and preprocessing artifacts (`preprocessing_artifacts.pkl` located in your specified `output_dir`, e.g., `results/`), you can use these to transform new datasets for downstream ML tasks.
+
+The script `scripts/example_usage.py` provides an example of how to do this:
+
+1.  **Loads New Data:** Reads a dataset (e.g., a Parquet file).
+2.  **Loads Embeddings & Artifacts:** Reads the saved `context_embeddings.json` and `preprocessing_artifacts.pkl`.
+3.  **Selects Context:** Focuses on transforming data according to the embeddings and preprocessing steps learned for a *specific* context (e.g., `context_0`).
+4.  **Preprocesses Numerical Features:** Applies the saved numerical scalers (e.g., `StandardScaler`) to the corresponding columns in the new data.
+5.  **Applies Embeddings:** Looks up the learned embedding vector for each value in the categorical columns using the saved vocabularies and embeddings. Handles unseen values using the special `__UNKNOWN__` embedding.
+6.  **Creates Transformed Data:** Generates a new DataFrame where the original categorical columns are replaced by their embedding dimensions (e.g., `cat_feature_str` might become `cat_feature_str_emb_0`, `cat_feature_str_emb_1`, ...).
+
+### Running the Example Script
+
+You can run the example script directly. It includes internal configuration pointing to the default locations of the synthetic data and the generated results. It also includes logic to create dummy input files if they don't exist.
+
+```bash
+# Assuming you are in the project root directory
+# Activate your virtual environment (e.g., source .venv/bin/activate)
+
+python scripts/example_usage.py
+```
+
+This will:
+
+*   Load the synthetic data (`data/synthetic_data.parquet`).
+*   Load the results from the default `results/` directory.
+*   Transform the data using the artifacts and embeddings for `context_0`.
+*   Print the head of the transformed DataFrame.
+*   Save the transformed data to `results/transformed_data_context_0.parquet`.
+
+*Note:* To use this script for your own data and results, you will likely need to modify the paths and the `TARGET_CONTEXT` variable within `scripts/example_usage.py`.

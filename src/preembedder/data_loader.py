@@ -79,18 +79,18 @@ def load_config(config_path: str) -> Dict[str, Any]:
 
 def load_data(config: Dict[str, Any], config_dir: str) -> pd.DataFrame:
     """Loads the dataset specified in the configuration."""
-    data_uri = config['data_uri']
+    data_path = config['data_path']
     # Handle relative paths in config: assume relative to config file's directory
-    if not os.path.isabs(data_uri):
+    if not os.path.isabs(data_path):
         # Join and then normalize the path to correctly handle '../'
-        data_uri = os.path.normpath(os.path.join(config_dir, data_uri))
+        data_path = os.path.normpath(os.path.join(config_dir, data_path))
 
-    logging.info(f"Loading data from: {data_uri}")
-    if not os.path.exists(data_uri):
-         logging.error(f"Data file not found at {data_uri}")
-         raise FileNotFoundError(f"Data file not found at {data_uri}")
+    logging.info(f"Loading data from: {data_path}")
+    if not os.path.exists(data_path):
+         logging.error(f"Data file not found at {data_path}")
+         raise FileNotFoundError(f"Data file not found at {data_path}")
     try:
-        df = pd.read_parquet(data_uri)
+        df = pd.read_parquet(data_path)
         logging.info(f"Data loaded successfully. Shape: {df.shape}")
         # Basic validation
         required_cols = config['feature_cols'] + [config['target_col'], config['weight_col'], config['split_col']]
@@ -100,7 +100,7 @@ def load_data(config: Dict[str, Any], config_dir: str) -> pd.DataFrame:
             raise ValueError(f"Missing required columns in dataset: {missing_cols}")
         return df
     except Exception as e:
-        logging.error(f"Error loading data from {data_uri}: {e}")
+        logging.error(f"Error loading data from {data_path}: {e}")
         raise
 
 def get_context_data(df: pd.DataFrame, context_name: str, config: Dict[str, Any]) -> Tuple[pd.DataFrame, pd.DataFrame]:

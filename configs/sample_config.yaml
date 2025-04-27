@@ -1,12 +1,55 @@
+data_path: ../data/synthetic_data.parquet
+output_dir: results/ # Default output directory
+
+# --- Feature & Context Definitions ---
+feature_cols:
+  - cat_feature_str
+  - cat_feature_int
+  - num_feature_1
+  - num_feature_2
+  - noise_feature
+categorical_cols:
+  - cat_feature_str
+  - cat_feature_int
+target_col: target
+weight_col: weight
+split_col: split_col
+
+contexts:
+  context_0:
+    validation_values: [0]
+  context_1:
+    validation_values: [1]
+  context_2:
+    validation_values: [2]
+  context_3:
+    validation_values: [3]
+  context_4:
+    validation_values: [4]
+
+# --- Model Architecture ---
+embedding_dim: 16 # Default embedding dimension
+mlp_layers: [64, 32] # Default MLP layer sizes
+mlp_dropout: 0.1 # Default MLP dropout rate
+
+# --- Training Parameters ---
+learning_rate: 0.001 # Default learning rate
+batch_size: 256     # Default batch size
+epochs: 10          # Default number of epochs for FINAL training (distinct from HPO epochs)
+
 # --- HPO Configuration ---
 hpo:
   enabled: true # Set to false to skip HPO and use fixed params above
   num_trials: 5 # Number of hyperparameter sets to try (Reduced for faster testing)
   epochs: 5 # Max epochs per HPO trial training (Reduced for faster testing)
-  early_stopping_patience: 5 # Stop HPO trial if mean val_wcorr doesn't improve 
+  early_stopping_patience: 5 # Stop HPO trial if mean val_wcorr doesn't improve
   # Define search space using hyperopt's syntax (used by hpo.py)
   # Example search space (actual implementation in hpo.py):
-  # embedding_dim: choice([8, 16, 32]) 
+  # embedding_dim: choice([8, 16, 32])
+  # mlp_layers: choice([[64, 32], [128, 64]])
+  # learning_rate: loguniform(-3, 0) # 0.001 to 1
 
 # Example search space (actual implementation in hpo.py):
-# embedding_dim: choice([8, 16, 32]) 
+# embedding_dim: choice([8, 16, 32])
+# mlp_layers: choice([[64, 32], [128, 64]])
+# learning_rate: loguniform(-3, 0) # 0.001 to 1

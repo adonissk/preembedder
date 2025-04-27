@@ -10,7 +10,6 @@ The key idea is to handle situations where the optimal representation of a categ
 
 *   **Context-Specific Training:** Trains models considering different contexts defined in the data.
 *   **Supervised Embedding Learning:** Uses a specified target variable and supervised training objective to learn embeddings.
-*   **Normalized Embeddings:** Applies Layer Normalization to the learned embeddings, ensuring each embedding vector has approximately zero mean and unit standard deviation, suitable for downstream tasks.
 *   **Flexible Preprocessing:** Handles numerical (scaling) and categorical (vocabulary creation, embedding) features.
 *   **Hyperparameter Optimization (HPO):** Integrates with `hyperopt` to automatically find optimal hyperparameters (embedding dimensions, MLP architecture, learning rate, etc.) using Tree-structured Parzen Estimators (TPE).
 *   **Configurable Workflow:** Uses YAML files for easy configuration of data paths, features, context definitions, HPO settings, and training parameters.
@@ -51,7 +50,7 @@ pip install -r requirements.txt
 
 The package uses a YAML configuration file to control its behavior. See the detailed documentation for all options:
 
-[**Full Configuration Documentation**](docs/CONFIGURATION.md)
+[**Full Configuration Documentation**](../docs/CONFIGURATION.md)
 
 Key sections include:
 
@@ -65,17 +64,15 @@ Key sections include:
 
 1.  **Prepare Data:** Ensure your data is accessible (e.g., as a Parquet or CSV file).
 2.  **Create Configuration:** Create a YAML configuration file (e.g., `configs/my_config.yaml`) specifying paths, columns, contexts, and desired HPO/training settings. Refer to `configs/sample_config.yaml` and `docs/CONFIGURATION.md`.
-3.  **Run the Workflow:** Navigate into the `src` directory and execute the `main.py` script using the `python -m` flag. Ensure your virtual environment is activated.
+3.  **Run the Workflow:** Execute the `main.py` script from the directory containing the `preembedder` package directory (i.e., the directory containing `main.py`, `hpo.py`, etc.), providing the path to your configuration file. Ensure your virtual environment is activated.
 
 ```bash
-# Example: Assuming you are in the project root directory
-# Activate your virtual environment (e.g., source .venv/bin/activate)
+# Example: Assuming you are in the directory containing the preembedder package
+# Activate your virtual environment (e.g., source ../.venv/bin/activate)
 
-cd src
 python -m preembedder.main --config ../configs/my_config.yaml
-# cd .. # Optionally return to the project root
 ```
 
-*Note:* Running from the `src` directory and using `python -m preembedder.main` ensures Python can correctly locate the package and handle relative imports. The configuration file path needs to be relative to the `src` directory (e.g., `../configs/my_config.yaml`).
+*Note:* The command uses `python -m preembedder.main` to correctly handle relative imports within the package structure.
 
-4.  **Check Results:** Find the extracted embeddings (`context_embeddings.json`), best hyperparameters (`best_hyperparameters.json`), and preprocessing artifacts (`preprocessing_artifacts.pkl`) in the specified `output_dir` (defaults to `results/` at the project root).
+4.  **Check Results:** Find the extracted embeddings (`context_embeddings.json`), best hyperparameters (`best_hyperparameters.json`), and preprocessing artifacts (`preprocessing_artifacts.pkl`) in the specified `output_dir`.

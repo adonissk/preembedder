@@ -1,0 +1,12 @@
+# --- HPO Configuration ---
+hpo:
+  enabled: true # Set to false to skip HPO and use fixed params above
+  num_trials: 5 # Number of hyperparameter sets to try (Reduced for faster testing)
+  epochs: 5 # Max epochs per HPO trial training (Reduced for faster testing)
+  early_stopping_patience: 5 # Stop HPO trial if mean val_wcorr doesn't improve 
+  # Define search space using hyperopt's syntax (used by hpo.py)
+  # Example search space (actual implementation in hpo.py):
+  # embedding_dim: choice([8, 16, 32]) 
+
+# Example search space (actual implementation in hpo.py):
+# embedding_dim: choice([8, 16, 32]) 

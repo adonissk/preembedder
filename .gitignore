@@ -1,0 +1,13 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual Environment
+.venv/
+
+# Output
+results/
+
+# IDE / OS specific
+.vscode/
+.DS_Store 

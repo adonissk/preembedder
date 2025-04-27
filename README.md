@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # PreEmbedder: Context-Aware Categorical Feature Embeddings
 
 ## Purpose
@@ -77,3 +78,6 @@ python -m preembedder.main --config configs/my_config.yaml
 *Note:* The command uses `python -m preembedder.main` to correctly handle relative imports within the package structure, now located in `src/`.
 
 4.  **Check Results:** Find the extracted embeddings (`context_embeddings.json`), best hyperparameters (`best_hyperparameters.json`), and preprocessing artifacts (`preprocessing_artifacts.pkl`) in the specified `output_dir` (defaults to `results/` at the project root).
+=======
+# preembedder
+>>>>>>> b80596842d8f53f442ee4ed4f23da331c1553668
